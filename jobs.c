@@ -98,7 +98,13 @@ void PrintJobs(Pjob header)
 {
 	Pjob curr_job = header;
 	for (int i = 1; curr_job != NULL; i++)
-		printf("[%d] %s :  %d secs\n", curr_job.pid, curr_job.name, time(NULL) - curr_job.ini_time);
+	{
+		if (curr_job->stopped)
+			printf("[%d] %s :  %d secs (Stopped)\n", curr_job.pid, curr_job.name, time(NULL) - curr_job.ini_time);
+		else
+			printf("[%d] %s :  %d secs\n", curr_job.pid, curr_job.name, time(NULL) - curr_job.ini_time);
+		curr_job = curr_job->next_job;
+	}
 }
 
 Pjob find_job(Pjob header, int line_num) {
