@@ -5,7 +5,7 @@
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-bool create_Job(Pjob header, int pid, char* name)
+bool create_Job(Pjob header, int pid, char* name, bool stopped)
 {
 	Pjob job;
 	job = (Pjob)malloc(sizeof(job));
@@ -18,7 +18,7 @@ bool create_Job(Pjob header, int pid, char* name)
 	job->time = 0;
 	strcpy(job->name, name);
 	job->time = time(NULL);
-	job->stopped = false;
+	job->stopped = stopped;
 	return true;
 }
 

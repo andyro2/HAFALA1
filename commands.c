@@ -247,8 +247,10 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 		curr_run_pid = getpid();
 		if (!strcmp(args[num_arg], "&"))
 			args[num_arg] = '\0';
-		execv(cmdString, args);
-		perror("smash error: > ");
+		execvp(cmdString, args);
+		//perror("smash error: > ");
+		perror("Execution of %d pid failed", getpid());
+		curr_run_pid = -1;
 		exit(1);
 	}
 
@@ -330,8 +332,7 @@ int BgCmd(char* lineSize, Pjob jobs)
 			return -1;
 		case 0:
 			setpgrp();
-			curr_run_pid = getpid();
-			if (execvp(Command, args)<0)
+			if (execvp(Command, args) == -1)
 			{
 				perror("Execvp error");
 				exit(1);
@@ -339,7 +340,7 @@ int BgCmd(char* lineSize, Pjob jobs)
 			return -1;
 		default:
 		
-			create_Job(jobs, pID, cmd);
+			create_Job(jobs, pID, cmd,false);
 			return 0;
 		
 		}

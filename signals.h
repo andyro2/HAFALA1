@@ -7,6 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <stdbool.h>
+
+void handler_cntlc(int sig_number);
+void handler_cntlz(int sig_number);
 
 
 
