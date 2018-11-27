@@ -17,11 +17,7 @@
 
 
 
-History* history = (History*)malloc(sizeof(History));
-history->prev_exists = FALSE;
-history->count = 0;
-history->index = 0;
-history->bg = FALSE;
+
 
 
 
