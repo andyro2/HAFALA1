@@ -18,13 +18,21 @@ extern char* L_Fg_Cmd;
 extern int curr_run_pid = -1;
 Pjob jobs = NULL;
 char lineSize[MAX_LINE_SIZE]; 
+char prev_folder[MAX_LINE_SIZE + 1] = { 0 };
 //**************************************************************************************
 // function name: main
 // Description: main function of smash. get command from user and calls command functions
 //**************************************************************************************
 int main(int argc, char *argv[])
 {
-    char cmdString[MAX_LINE_SIZE]; 	   
+    char cmdString[MAX_LINE_SIZE];
+
+	char cmdString[MAX_LINE_SIZE];
+	History* history = (History*)malloc(sizeof(History));
+	history->prev_exists = FALSE;
+	history->count = 0;
+	history->index = 0;
+	history->bg = FALSE;
 
 	
 	//signal declaretions
@@ -56,19 +64,22 @@ int main(int argc, char *argv[])
 		strcpy(cmdString, lineSize); 	
 		cmdString[strlen(lineSize)-1]='\0';
 		// Save History here!
-
+		history_save( history, cmdString)
 		update_jobs(jobs);
 					// perform a complicated Command
 		if(!ExeComp(lineSize)) continue; 
 					// background command	
 	 	if(!BgCmd(lineSize, jobs)) continue; 
 					// built in commands
-		ExeCmd(jobs, lineSize, cmdString);
+		ExeCmd(jobs, lineSize, cmdString, prev_folder,history);
 		
 		/* initialize for next line read*/
 		lineSize[0]='\0';
 		cmdString[0]='\0';
 	}
+		delete_jobs(jobs);
+		free(history);
+
     return 0;
 }
 

@@ -7,7 +7,7 @@
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString)
+int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, History* history)
 {
 	char* cmd;
 	char* args[MAX_ARG];
@@ -80,7 +80,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString)
 	{
 		if (num_arg == 0) {
 
-			History* hist = context->history;
+			History* hist = history;
 			int idx = (hist->index - hist->count) % HIST_MAX;
 			if (idx < 0)
 				idx += HIST_MAX;
@@ -346,9 +346,9 @@ int BgCmd(char* lineSize, Pjob jobs)
 
 void history_save(History* history, char* cmd)
 {
-	int ind = history->idx;
-	strcpy(history->command[ind], cmd);
-	if (history->cnt<HIST_MAX)     ++hist->cnt;
-	history->idx = ind + 1;
+	int ind = history->index;
+	strcpy(history->memory[ind], cmd);
+	if (history->count <HIST_MAX)     ++hist->count;
+	history->index = ind + 1;
 
 }

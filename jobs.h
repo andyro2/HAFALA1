@@ -10,6 +10,7 @@
 
 #define MAX_NAME_LENGTH  50
 
+
 typedef struct _JOBS {
 	
 	int pid;
