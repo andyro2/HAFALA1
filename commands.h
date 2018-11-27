@@ -37,5 +37,6 @@ int ExeComp(char* lineSize);
 int BgCmd(char* lineSize, Pjob jobs);
 int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, History* history);
 void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg);
+void history_save(History* history, char* cmd);
 #endif
 
