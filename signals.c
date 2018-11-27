@@ -6,7 +6,7 @@
 /* Name: handler_cntlc
  Synopsis: handle the Control-C */
 
-void handler_cntlc(int sig_number) {
+void ctrlc_handler(int sig_number) {
 	if (curr_run_pid == -1) return;
 	else {
 		if (kill(curr_run_pid, SIGINT)) 
@@ -19,14 +19,14 @@ void handler_cntlc(int sig_number) {
 /*******************************************/
 /* Name: handler_cntlz
 Synopsis: handle the Control-Z */
-void handler_cntlz(int sig_number) {
+void ctrlz_handler(int sig_number) {
 	if (curr_run_pid == -1) return;
 	else {
-		if (kill(curr_run_pid, SIGTSTP)) 
+		if (kill(curr_run_pid, SIGTSTP))
 			perror("error");
 		else {
 			printf("Signal SIGTSTP was sent to pid %d\n", curr_run_pid);
-			if (!create_Job(jobs, curr_run_pid, fg_cmd, true))
+			if (!create_Job(jobs, curr_run_pid, L_Fg_Cmd, true))
 				printf("Can't add job\n");
 		}
 		curr_run_pid = -1;

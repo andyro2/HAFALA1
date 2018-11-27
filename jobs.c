@@ -128,3 +128,20 @@ Pjob find_job(Pjob header, int line_num) {
 	return curr_job;
 }
 
+void update_jobs(Pjob header)
+{
+	Pjob curr_job = header, prev_job;
+	int status, pID;
+	while (curr_job != NULL)
+	{
+		prev_job = curr_job;
+		pID; = waitpid(curr_job->pid, &status, WNOHANG);
+		if (((pID == curr_job->pid) && WIFEXITED(status)) || pID == -1)
+		{
+			prev_job->next_job = curr_job->next_job;
+			free(curr_job);
+		}
+		curr_job = prev_job->next_job;
+	}
+}
+

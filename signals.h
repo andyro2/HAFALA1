@@ -9,8 +9,8 @@
 #include <signal.h>
 #include <stdbool.h>
 
-void handler_cntlc(int sig_number);
-void handler_cntlz(int sig_number);
+void ctrlc_handler(int sig_number);
+void ctrlz_handler(int sig_number);
 
 
 

@@ -19,10 +19,11 @@ typedef struct _JOBS {
 	struct _JOBS* next_job;
 } job,* Pjob;
 
-bool create_Job(Pjob header, int pid, char* name); // creates new job and inserts at the and. returns success or fail
+bool create_Job(Pjob header, int pid, char* name, bool); // creates new job and inserts at the and. returns success or fail
 Pjob remove_job(Pjob header, int line_num); // removes from list and returnes job according to line num. if line num = 0 returns last
 Pjob find_job(Pjob header, int line_num);
 void free_jobs(Pjob header);
 int kill_jobs(Pjob header);
+update_jobs(Pjob header);
 
 #endif
