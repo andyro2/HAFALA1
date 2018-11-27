@@ -232,7 +232,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString)
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-void ExeExternal(char *args[MAX_ARG], char* cmdString)
+void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 {
 	int pID;
 	switch (pID = fork())
@@ -296,8 +296,20 @@ int BgCmd(char* lineSize, Pjob jobs)
 {
 
 	char* Command;
-	char* delimiters = " \t\n";
 	char *args[MAX_ARG];
+	char* delimiters = " \t\n";
+	int i = 0, num_arg = 0;
+	cmd = strtok(lineSize, delimiters);
+	if (cmd == NULL)
+		return 0;
+	args[0] = cmd;
+	for (i = 1; i<MAX_ARG; i++)
+	{
+		args[i] = strtok(NULL, delimiters);
+		if (args[i] != NULL)
+			num_arg++;
+
+	}
 	if (lineSize[strlen(lineSize) - 2] == '&')
 	{
 		lineSize[strlen(lineSize) - 2] = '\0';
@@ -310,18 +322,25 @@ int BgCmd(char* lineSize, Pjob jobs)
 		switch (pID = fork()) {
 		case -1:
 			perror("perror: ");
-			return QUIT;
+			exit(1);
+			return -1;
 		case 0:
-			return BACKGROUND;
+			setpgrp();
+			curr_run_pid = getpid();
+			if (execvp(Command, args)<0)
+			{
+				perror("Execvp error");
+				exit(1);
+			}
+			return -1;
 		default:
-		{
+		
 			create_Job(jobs, pID, cmd);
+			return 0;
+		
 		}
-		}
-		return NON;
 
 	}
-	return -1;
 }
 
 void history_save(History* history, char* cmd)
