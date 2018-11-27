@@ -278,14 +278,18 @@ int ExeComp(char* lineSize)
 	char *args[MAX_ARG];
 	if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
 	{
-		// Add your code here (execute a complicated command)
-
-		/*
-		your code
-		*/
+		args[0] = (char*)"/bin/csh";
+		args[1] = (char*)"-f";
+		args[2] = (char*)"-c";
+		args[3] = lineSize;
+		args[4] = NULL;
+		for (k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
+		ExeExternal(args, "/bin/bash", 0);
+		return 0;
 	}
 	return -1;
 }
+
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
