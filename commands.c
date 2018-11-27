@@ -1,7 +1,6 @@
 //		commands.c
 //********************************************
 #include "commands.h"
-#include "jobs.h"
 //********************************************
 // function name: ExeCmd
 // Description: interperts and executes built-in commands
@@ -15,7 +14,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString)
 	char pwd[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
-	bool illegal_cmd = FALSE; // illegal command
+	_bool illegal_cmd = FALSE; // illegal command
 	cmd = strtok(lineSize, delimiters);
 	if (cmd == NULL)
 		return 0;
@@ -305,7 +304,7 @@ int BgCmd(char* lineSize, Pjob jobs)
 	char *args[MAX_ARG];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
-	cmd = strtok(lineSize, delimiters);
+	char* cmd = strtok(lineSize, delimiters);
 	if (cmd == NULL)
 		return 0;
 	args[0] = cmd;
@@ -319,9 +318,6 @@ int BgCmd(char* lineSize, Pjob jobs)
 	if (lineSize[strlen(lineSize) - 2] == '&')
 	{
 		lineSize[strlen(lineSize) - 2] = '\0';
-
-		refresh_jobs(jobs); // TODO - check with other 
-		// to do before sent
 
 		int pID;
 		//DEBUG: printf("& detected on process %d!\n",getpid());	

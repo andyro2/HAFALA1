@@ -8,7 +8,7 @@
 #ifndef _Job_H_
 #define _Job_H_
 
-#define MAX_NAME_LENGTH = 50
+#define MAX_NAME_LENGTH  50
 
 typedef struct _JOBS {
 	
@@ -24,6 +24,6 @@ Pjob remove_job(Pjob header, int line_num); // removes from list and returnes jo
 Pjob find_job(Pjob header, int line_num);
 void free_jobs(Pjob header);
 int kill_jobs(Pjob header);
-update_jobs(Pjob header);
+void update_jobs(Pjob header);
 
 #endif
