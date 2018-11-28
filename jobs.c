@@ -19,11 +19,18 @@ bool create_Job(int pid, char* name, bool stopped)
 	job->ini_time = time(NULL);
 	job->stopped = stopped;
 	job->next_job = NULL;
-	
-	Pjob curr_job;
-	while (curr_job->next_job != NULL)
-		curr_job = curr_job->next_job;
-	curr_job->next_job = job;
+
+	Pjob curr_job = jobs, prev_job;
+	if (jobs == NULL)
+		jobs = job;
+	else
+	{
+		while (curr_job != NULL) {
+			prev_job = curr_job;
+			curr_job = curr_job->next_job;
+		}
+		prev_job->next_job = job;
+	}
 	return true;
 }
 
