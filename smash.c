@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 		strcpy(cmdString, lineSize); 	
 		cmdString[strlen(lineSize)-1]='\0';
 		// Save History here!
-		history_save(history, cmdString);
+	    history_save(history, cmdString);
 		update_jobs();
 					// perform a complicated Command
 		if(!ExeComp(lineSize)) continue; 

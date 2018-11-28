@@ -354,7 +354,8 @@ int BgCmd(char* lineSize)
 }
 
 void history_save(Phistory history, char* cmd)
-{
+
+	if (!strcmp(cmd, "")) return;
 	int ind = history->index;
 	strcpy(history->memory[ind], cmd);
 	if (history->count <HIST_MAX)     ++history->count;
