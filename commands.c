@@ -287,7 +287,7 @@ int ExeComp(char* lineSize)
 		args[2] = (char*)"-c";
 		args[3] = lineSize;
 		args[4] = NULL;
-		for (k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
+		for (int k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
 		ExeExternal(args, "/bin/bash", 0);
 		return 0;
 	}
@@ -351,7 +351,7 @@ void history_save(Phistory history, char* cmd)
 {
 	int ind = history->index;
 	strcpy(history->memory[ind], cmd);
-	if (history->count <HIST_MAX)     ++hist->count;
+	if (history->count <HIST_MAX)     ++history->count;
 	history->index = ind + 1;
 
 }
