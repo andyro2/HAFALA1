@@ -15,9 +15,8 @@ bool create_Job(Pjob header, int pid, char* name, bool stopped)
 		return false;
 	}
 	job->pid = pid;
-	job->time = 0;
 	strcpy(job->name, name);
-	job->time = time(NULL);
+	job->ini_time = time(NULL);
 	job->stopped = stopped;
 	return true;
 }
