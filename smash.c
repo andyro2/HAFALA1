@@ -8,6 +8,7 @@ main file. This file contains the main function of smash
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <stdbool.h>
 #include "commands.h"
 #include "signals.h"
 #include "jobs.h"
@@ -26,11 +27,11 @@ char prev_folder[MAX_LINE_SIZE + 1] = { 0 };
 int main(int argc, char *argv[])
 {
 	char cmdString[MAX_LINE_SIZE];
-	History* history = (History*)malloc(sizeof(History));
-	history->prev_exists = FALSE;
+	Phistory history = (Phistory)malloc(sizeof(History));
+	history->prev_exists = false;
 	history->count = 0;
 	history->index = 0;
-	history->bg = FALSE;
+	history->bg = false;
 
 	
 	//signal declaretions
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
 		strcpy(cmdString, lineSize); 	
 		cmdString[strlen(lineSize)-1]='\0';
 		// Save History here!
-		history_save( history, cmdString)
+		history_save(history, cmdString);
 		update_jobs(jobs);
 					// perform a complicated Command
 		if(!ExeComp(lineSize)) continue; 

@@ -29,14 +29,12 @@ typedef struct _History {
 	bool bg;
 	char memory[HIST_MAX][MAX_LINE_SIZE];
 	struct _History* next_history;
-} history, *History;
+} History, *Phistory;
 
-
-typedef enum { FALSE , TRUE } _bool;
 int ExeComp(char* lineSize);
 int BgCmd(char* lineSize, Pjob jobs);
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, History* history);
+int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history);
 void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg);
-void history_save(History* history, char* cmd);
+void history_save(Phistory history, char* cmd);
 #endif
 

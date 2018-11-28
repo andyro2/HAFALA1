@@ -7,14 +7,14 @@
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, History* history)
+int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 {
 	char* cmd;
 	char* args[MAX_ARG];
 	char pwd[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
-	_bool illegal_cmd = FALSE; // illegal command
+	bool illegal_cmd = false; // illegal command
 	cmd = strtok(lineSize, delimiters);
 	if (cmd == NULL)
 		return 0;
@@ -34,14 +34,14 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	if (!strcmp(cmd, "cd"))
 	{
 		if (num_arg != 1) {
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		}
 		else
 		{
 			// check if there weren't a cd command before 
-			bool prev_request = FALSE;
+			bool prev_request = false;
 			if (!strcmp(args[1], "-"))
-				prev_request = TRUE;
+				prev_request = true;
 
 			if (prev_request && prev_folder[0] == 0)
 				return 0;
@@ -63,24 +63,25 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	/*************************************************/
 	else if (!strcmp(cmd, "pwd"))
 	{
-		if (num_arg != 0) {
-			illegal_cmd = TRUE;
+		if (num_arg != 0) 
+			illegal_cmd = true;
 		else if (getcwd(pwd, MAX_LINE_SIZE + 1) == NULL)
 		{
 			perror("error");
 			return 1;
 		}
-		else printf("%s\n", pwd);
+		else 
+			printf("%s\n", pwd);
 
-		}
 	}
 
 	/*************************************************/
 	else if (!strcmp(cmd, "history"))
 	{
-		if (num_arg == 0) {
+		if (num_arg == 0) 
+		{
 
-			History* hist = history;
+			Phistory hist = history;
 			int idx = (hist->index - hist->count) % HIST_MAX;
 			if (idx < 0)
 				idx += HIST_MAX;
@@ -92,7 +93,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 		}
 		else
 		{
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		}
 	}
 	/*************************************************/
@@ -100,7 +101,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	else if (!strcmp(cmd, "jobs"))
 	{
 		if (num_arg != 0) {
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		}
 		else PrintJobs(jobs);
 	}
@@ -108,7 +109,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	else if (!strcmp(cmd, "showpid"))
 	{
 		if (num_arg != 0)
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		else
 			printf("smash pid is %d\n", getpid());
 	}
@@ -116,9 +117,9 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	else if (!strcmp(cmd, "fg"))
 	{
 		Pjob curr_job;
-		int i = 0, job_num;
+		int i = 0, job_num, pid;
 		if (num_arg > 1)
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		else {
 			if (num_arg == 1)
 				job_num = atoi(args[1]);
@@ -127,7 +128,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 
 			curr_job = remove_job(jobs, job_num);
 			if (curr_job == NULL)
-				illegal_cmd = TRUE;
+				illegal_cmd = true;
 			else
 			{
 				if (curr_job->stopped) {
@@ -155,7 +156,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 		Pjob curr_job;
 		int i = 0, job_num;
 		if (num_arg > 1)
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		else
 		{
 			if (num_arg == 1)
@@ -165,7 +166,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 
 			curr_job = find_job(jobs, job_num); //TODO
 			if (curr_job == NULL)
-				illegal_cmd = TRUE;
+				illegal_cmd = true;
 			else if (cur_job->stopped == false)
 				printf("smash error: > job %d is already running on background\n", job_num);
 			else
@@ -181,7 +182,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 	else if (!strcmp(cmd, "quit"))
 	{
 		if (num_arg > 1)
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 
 		else {
 			if (num_arg == 0) {
@@ -194,14 +195,14 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 				exit(0);
 			}
 			else
-				illegal_cmd = TRUE;
+				illegal_cmd = true;
 		}
 
 	}
 	else if (!strcmp(cmd, "mv"))
 	{
 		if (num_arg != 2
-			illegal_cmd = TRUE;
+			illegal_cmd = true;
 		else {
 			if (rename(args[1], args[2])) {
 				perror("error");
@@ -218,7 +219,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, , char* prev_folder, Hist
 		ExeExternal(args, cmdString);
 		return 0;
 	}
-	if (illegal_cmd == TRUE)
+	if (illegal_cmd == true)
 	{
 		printf("smash error: > \"%s\"\n", cmdString);
 		return 1;
@@ -256,7 +257,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 	default:
 		// parent process 
 		if (!strcmp(args[num_arg], "&")) { // for bg command
-			if (!InsertJob(jobs, cmd, pID, FALSE, 0, time(NULL)))
+			if (!InsertJob(jobs, cmd, pID, false, 0, time(NULL)))
 				printf("Can't add job\n");
 		}
 		else {
@@ -344,7 +345,7 @@ int BgCmd(char* lineSize, Pjob jobs)
 	}
 }
 
-void history_save(History* history, char* cmd)
+void history_save(Phistory history, char* cmd)
 {
 	int ind = history->index;
 	strcpy(history->memory[ind], cmd);
