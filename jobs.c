@@ -61,7 +61,7 @@ int kill_jobs(Pjob header) {
 	for (int i = 1; curr_job != NULL; i++) {
 		printf("[%d] %s - Sending SIGTERM... ", i, curr_job->name);
 
-		if (kill(arr[i].pid, SIGTERM)) {
+		if (kill(curr_job->pid, SIGTERM)) {
 			printf("Error! can't send SIGTERM");
 			return;
 		}
@@ -81,7 +81,7 @@ int kill_jobs(Pjob header) {
 		}
 		printf("(5 sec passed) Sending SIGKILL...");
 
-		res = kill(pid, SIGKILL);
+		res = kill(curr_job->pid, SIGKILL);
 
 		if (res != 0) {
 			printf("Error! SIGKILL failed \n");
