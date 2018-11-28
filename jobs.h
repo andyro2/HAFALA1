@@ -28,5 +28,6 @@ Pjob find_job(int line_num);
 void free_jobs();
 int kill_jobs();
 void update_jobs();
+void PrintJobs();
 
 #endif

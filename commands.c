@@ -103,7 +103,8 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 		if (num_arg != 0) {
 			illegal_cmd = true;
 		}
-		else PrintJobs();
+		else 
+			PrintJobs();
 	}
 	/*************************************************/
 	else if (!strcmp(cmd, "showpid"))
@@ -117,7 +118,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	else if (!strcmp(cmd, "fg"))
 	{
 		Pjob curr_job;
-		int i = 0, job_num, pid;
+		int job_num;
 		if (num_arg > 1)
 			illegal_cmd = true;
 		else {
@@ -139,7 +140,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 				// *********************************************************
 				// not sure what the f**ck this is      zack: "hahaha"
 
-				pid = curr_job->pid;
+				
 				printf("%s\n", curr_job->name);
 				strcpy(L_Fg_Cmd, curr_job->name);
 				waitpid(curr_job->pid, NULL, 0);
@@ -154,7 +155,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	else if (!strcmp(cmd, "bg"))
 	{
 		Pjob curr_job;
-		int i = 0, job_num;
+		int job_num;
 		if (num_arg > 1)
 			illegal_cmd = true;
 		else
@@ -164,7 +165,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 			else
 				job_num = 0;
 
-			curr_job = find_job(job_num); //TODO
+			curr_job = find_job(job_num);
 			if (curr_job == NULL)
 				illegal_cmd = true;
 			else if (curr_job->stopped == false)
@@ -246,12 +247,12 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 	{
 		// Child Process
 		setpgrp();
-		curr_run_pid = getpid();
+		curr_run_pid = (int)getpid();
 		if (!strcmp(args[num_arg], "&"))
 			args[num_arg] = '\0';
 		execvp(cmdString, args);
 		//perror("smash error: > ");
-		fprintf("Execution of %d pid failed", curr_run_pid);
+		printf("Execution of %d pid failed", curr_run_pid);
 		curr_run_pid = -1;
 		exit(1);
 	}
@@ -279,7 +280,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 //**************************************************************************************
 int ExeComp(char* lineSize)
 {
-	char ExtCmd[MAX_LINE_SIZE + 2];
+	//char ExtCmd[MAX_LINE_SIZE + 2];
 	char *args[MAX_ARG];
 	if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
 	{
@@ -303,8 +304,6 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(char* lineSize)
 {
-
-	char* Command;
 	char *args[MAX_ARG];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
@@ -324,7 +323,9 @@ int BgCmd(char* lineSize)
 		lineSize[strlen(lineSize) - 2] = '\0';
 
 		int pID;
-		//DEBUG: printf("& detected on process %d!\n",getpid());	
+
+		printf("& detected on process %d!\n",getpid());	
+
 		switch (pID = fork()) {
 		case -1:
 			perror("perror: ");
@@ -332,7 +333,7 @@ int BgCmd(char* lineSize)
 			return -1;
 		case 0:
 			setpgrp();
-			if (execvp(Command, args) == -1)
+			if (execvp(cmd, args) == -1)
 			{
 				perror("Execvp error");
 				exit(1);
@@ -341,11 +342,12 @@ int BgCmd(char* lineSize)
 		default:
 		
 			create_Job(pID, cmd,false);
+			PrintJobs();
 			return 0;
 		
 		}
-
 	}
+	return -1;
 }
 
 void history_save(Phistory history, char* cmd)
