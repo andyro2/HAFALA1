@@ -99,9 +99,9 @@ void PrintJobs(Pjob header)
 	for (int i = 1; curr_job != NULL; i++)
 	{
 		if (curr_job->stopped)
-			printf("[%d] %s :  %d secs (Stopped)\n", curr_job.pid, curr_job.name, time(NULL) - curr_job.ini_time);
+			printf("[%d] %s :  %d secs (Stopped)\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
 		else
-			printf("[%d] %s :  %d secs\n", curr_job.pid, curr_job.name, time(NULL) - curr_job.ini_time);
+			printf("[%d] %s :  %d secs\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
 		curr_job = curr_job->next_job;
 	}
 }
@@ -134,7 +134,7 @@ void update_jobs(Pjob header)
 	while (curr_job != NULL)
 	{
 		prev_job = curr_job;
-		pID; = waitpid(curr_job->pid, &status, WNOHANG);
+		pID = waitpid(curr_job->pid, &status, WNOHANG);
 		if (((pID == curr_job->pid) && WIFEXITED(status)) || pID == -1)
 		{
 			prev_job->next_job = curr_job->next_job;
