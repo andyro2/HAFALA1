@@ -251,7 +251,7 @@ void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 			args[num_arg] = '\0';
 		execvp(cmdString, args);
 		//perror("smash error: > ");
-		perror("Execution of %d pid failed", getpid());
+		fprintf("Execution of %d pid failed", curr_run_pid);
 		curr_run_pid = -1;
 		exit(1);
 	}
@@ -289,7 +289,7 @@ int ExeComp(Pjob jobs, char* lineSize)
 		args[3] = lineSize;
 		args[4] = NULL;
 		for (int k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
-		ExeExternal(jobs,args, "/bin/bash", args,0);
+		ExeExternal(jobs,args, "/bin/bash", 0);
 		return 0;
 	}
 	return -1;
