@@ -15,17 +15,23 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
 	bool illegal_cmd = false; // illegal command
-	cmd = strtok(lineSize, delimiters);
+	//printf("\nline size  =  \"%s\" \n", lineSize);
+	cmd = strtok(cmdString, delimiters);
 	if (cmd == NULL)
 		return 0;
 	args[0] = cmd;
+
+	//printf("\nline size  =  \"%s\" \n", cmdString);
 	for (i = 1; i<MAX_ARG; i++)
 	{
 		args[i] = strtok(NULL, delimiters);
 		if (args[i] != NULL)
 			num_arg++;
-
+		//printf("\nnum args  = %d \n", num_arg);
 	}
+
+	//for (int p = 0; p <= num_arg ; p++)
+		//printf("num_arg[%d] = %s \n", p, args[p]);
 	/*************************************************/
 	// Built in Commands PLEASE NOTE NOT ALL REQUIRED
 	// ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
@@ -251,8 +257,8 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 		if (!strcmp(args[num_arg], "&"))
 			args[num_arg] = '\0';
 		execvp(cmdString, args);
-		//perror("smash error: > ");
-		printf("Execution of %d pid failed", curr_run_pid);
+		perror("error: > ");
+		printf("Execution of %d pid failed\n", curr_run_pid);
 		curr_run_pid = -1;
 		exit(1);
 	}
@@ -318,13 +324,17 @@ int BgCmd(char* lineSize)
 			num_arg++;
 
 	}
-	if (lineSize[strlen(lineSize) - 2] == '&')
-	{
-		lineSize[strlen(lineSize) - 2] = '\0';
 
+	//printf("hiii line size is: %s\n", args[num_arg]);
+
+	if (*args[num_arg] == '&')
+	{
+		//lineSize[strlen(lineSize) - 2] = '\0';
+		args[num_arg] = NULL;
+		num_arg -= 1;
 		int pID;
 
-		printf("& detected on process %d!\n",getpid());	
+		//printf("& detected on process %d!\n",getpid());	
 
 		switch (pID = fork()) {
 		case -1:
@@ -347,7 +357,7 @@ int BgCmd(char* lineSize)
 		
 		}
 	}
-	return -1;
+	else return -1;
 }
 
 void history_save(Phistory history, char* cmd)
