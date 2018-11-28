@@ -9,23 +9,26 @@
 //**************************************************************************************
 int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 {
+
 	char* cmd;
 	char* args[MAX_ARG];
 	char pwd[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
 	bool illegal_cmd = false; // illegal command
-	cmd = strtok(lineSize, delimiters);
+	cmd = strtok(cmdString, delimiters);
 	if (cmd == NULL)
 		return 0;
 	args[0] = cmd;
 	for (i = 1; i<MAX_ARG; i++)
 	{
 		args[i] = strtok(NULL, delimiters);
+		printf("arg= %s\n", args[i]);
 		if (args[i] != NULL)
 			num_arg++;
 
 	}
+
 	/*************************************************/
 	// Built in Commands PLEASE NOTE NOT ALL REQUIRED
 	// ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
@@ -33,6 +36,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	/*************************************************/
 	if (!strcmp(cmd, "cd"))
 	{
+
 		if (num_arg != 1) {
 			illegal_cmd = true;
 		}
