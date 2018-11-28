@@ -8,6 +8,8 @@
 #include <string.h>
 #include <signal.h>
 #include <stdbool.h>
+#include "commands.h"
+#include "jobs.h"
 
 void ctrlc_handler(int sig_number);
 void ctrlz_handler(int sig_number);
