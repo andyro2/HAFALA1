@@ -18,6 +18,12 @@ bool create_Job(int pid, char* name, bool stopped)
 	strcpy(job->name, name);
 	job->ini_time = time(NULL);
 	job->stopped = stopped;
+	job->next_job = NULL;
+	
+	Pjob curr_job;
+	while (curr_job->next_job != NULL)
+		curr_job = curr_job->next_job;
+	curr_job->next_job = job;
 	return true;
 }
 
