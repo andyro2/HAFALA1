@@ -31,10 +31,10 @@ typedef struct _History {
 	struct _History* next_history;
 } History, *Phistory;
 
-int ExeComp(char* lineSize);
+int ExeComp(Pjob jobs, char* lineSize);
 int BgCmd(char* lineSize, Pjob jobs);
 int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history, char* L_Fg_Cmd);
-void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg);
+void ExeExternal(Pjob jobs, char *args[MAX_ARG], char* cmdString, int num_arg);
 void history_save(Phistory history, char* cmd);
 #endif
 
