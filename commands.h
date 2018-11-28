@@ -14,7 +14,7 @@
 #define MAX_ARG 20
 #define HIST_MAX 51
 
-
+extern int curr_run_pid;
 
 
 
@@ -33,7 +33,7 @@ typedef struct _History {
 
 int ExeComp(char* lineSize);
 int BgCmd(char* lineSize, Pjob jobs);
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history);
+int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history, char* L_Fg_Cmd);
 void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg);
 void history_save(Phistory history, char* cmd);
 #endif

@@ -7,7 +7,7 @@
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history)
+int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history, char* L_Fg_Cmd)
 {
 	char* cmd;
 	char* args[MAX_ARG];
@@ -141,7 +141,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 
 				pid = curr_job->pid;
 				printf("%s\n", curr_job->name);
-				strcpy(L_Fg_Cmd, curr_job->name));
+				strcpy(L_Fg_Cmd, curr_job->name);
 				waitpid(curr_job->pid, NULL, 0);
 				//wait till child finished
 				curr_run_pid = -1;

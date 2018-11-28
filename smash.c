@@ -15,8 +15,7 @@ main file. This file contains the main function of smash
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
 
-extern char* L_Fg_Cmd;
-extern int curr_run_pid = -1;
+char* L_Fg_Cmd;
 Pjob jobs = NULL;
 char lineSize[MAX_LINE_SIZE]; 
 char prev_folder[MAX_LINE_SIZE + 1] = { 0 };
@@ -49,7 +48,7 @@ int main(int argc, char *argv[])
 	/************************************/
 	// Init globals 
 
-
+	curr_run_pid = -1;
 	
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 
@@ -70,7 +69,7 @@ int main(int argc, char *argv[])
 					// background command	
 	 	if(!BgCmd(lineSize, jobs)) continue; 
 					// built in commands
-		ExeCmd(jobs, lineSize, cmdString, prev_folder,history);
+		ExeCmd(jobs, lineSize, cmdString, prev_folder,history, L_Fg_Cmd);
 		
 		/* initialize for next line read*/
 		lineSize[0]='\0';
