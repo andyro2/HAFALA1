@@ -23,7 +23,6 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	for (i = 1; i<MAX_ARG; i++)
 	{
 		args[i] = strtok(NULL, delimiters);
-		printf("arg= %s\n", args[i]);
 		if (args[i] != NULL)
 			num_arg++;
 
