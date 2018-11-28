@@ -7,7 +7,7 @@
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phistory history, char* L_Fg_Cmd)
+int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 {
 	char* cmd;
 	char* args[MAX_ARG];
@@ -103,7 +103,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 		if (num_arg != 0) {
 			illegal_cmd = true;
 		}
-		else PrintJobs(jobs);
+		else PrintJobs();
 	}
 	/*************************************************/
 	else if (!strcmp(cmd, "showpid"))
@@ -126,7 +126,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 			else
 				job_num = 0;
 
-			curr_job = remove_job(jobs, job_num);
+			curr_job = remove_job(job_num);
 			if (curr_job == NULL)
 				illegal_cmd = true;
 			else
@@ -164,7 +164,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 			else
 				job_num = 0;
 
-			curr_job = find_job(jobs, job_num); //TODO
+			curr_job = find_job(job_num); //TODO
 			if (curr_job == NULL)
 				illegal_cmd = true;
 			else if (curr_job->stopped == false)
@@ -186,12 +186,12 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 
 		else {
 			if (num_arg == 0) {
-				free_jobs(jobs);
+				free_jobs();
 				exit(0);
 			}
 			else if (!strcmp(args[1], "kill")) {
-				kill_jobs(jobs);
-				free_jobs(jobs);
+				kill_jobs();
+				free_jobs();
 				exit(0);
 			}
 			else
@@ -234,7 +234,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
+void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 {
 	int pID;
 	switch (pID = fork())
@@ -260,7 +260,7 @@ void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 		// parent process 
 		if (!strcmp(args[num_arg], "&")) // for bg command
 		{ 
-			if (!create_Job(jobs, pID, args[0], false))
+			if (!create_Job(pID, args[0], false))
 				printf("Can't add job\n");
 		}
 		else {
@@ -277,7 +277,7 @@ void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 // Parameters: command string
 // Returns: 0- if complicated -1- if not
 //**************************************************************************************
-int ExeComp(Pjob jobs, char* lineSize)
+int ExeComp(char* lineSize)
 {
 	char ExtCmd[MAX_LINE_SIZE + 2];
 	char *args[MAX_ARG];
@@ -301,7 +301,7 @@ int ExeComp(Pjob jobs, char* lineSize)
 // Parameters: command string, pointer to jobs
 // Returns: 0- BG command -1- if not
 //**************************************************************************************
-int BgCmd(char* lineSize, Pjob jobs)
+int BgCmd(char* lineSize)
 {
 
 	char* Command;
@@ -340,7 +340,7 @@ int BgCmd(char* lineSize, Pjob jobs)
 			return -1;
 		default:
 		
-			create_Job(jobs, pID, cmd,false);
+			create_Job(pID, cmd,false);
 			return 0;
 		
 		}

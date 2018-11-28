@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 		cmdString[strlen(lineSize)-1]='\0';
 		// Save History here!
 		history_save(history, cmdString);
-		update_jobs(jobs);
+		update_jobs();
 					// perform a complicated Command
 		if(!ExeComp(jobs, lineSize)) continue; 
 					// background command	
@@ -76,7 +76,8 @@ int main(int argc, char *argv[])
 		lineSize[0]='\0';
 		cmdString[0]='\0';
 	}
-		delete_jobs(jobs);
+		free_jobs();
+		free(L_Fg_Cmd);
 		free(history);
 
     return 0;

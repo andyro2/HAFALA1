@@ -5,7 +5,7 @@
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-bool create_Job(Pjob header, int pid, char* name, bool stopped)
+bool create_Job(int pid, char* name, bool stopped)
 {
 	Pjob job;
 	job = (Pjob)malloc(sizeof(job));
@@ -21,11 +21,11 @@ bool create_Job(Pjob header, int pid, char* name, bool stopped)
 	return true;
 }
 
-Pjob remove_job(Pjob header, int line_num) {
+Pjob remove_job(int line_num) {
 	Pjob curr_job, prev_job;
 	if (line_num != 0)
 	{
-		curr_job = header;
+		curr_job = jobs;
 		for (int i = 1; i < line_num; i++) {
 			if (curr_job->next_job = NULL) // line num larger than num of jobs
 				return NULL;
@@ -44,8 +44,8 @@ Pjob remove_job(Pjob header, int line_num) {
 	return curr_job;
 }
 
-void free_jobs(Pjob header) {
-	Pjob curr_job = header, tmp = NULL;
+void free_jobs() {
+	Pjob curr_job = jobs, tmp = NULL;
 
 	while (curr_job != NULL)
 	{
@@ -56,8 +56,8 @@ void free_jobs(Pjob header) {
 	return;
 }
 
-int kill_jobs(Pjob header) {
-	Pjob curr_job = header;
+int kill_jobs() {
+	Pjob curr_job = jobs;
 	for (int i = 1; curr_job != NULL; i++) {
 		printf("[%d] %s - Sending SIGTERM... ", i, curr_job->name);
 
@@ -93,9 +93,9 @@ int kill_jobs(Pjob header) {
 	return 0;
 }
 
-void PrintJobs(Pjob header)
+void PrintJobs()
 {
-	Pjob curr_job = header;
+	Pjob curr_job = jobs;
 	for (int i = 1; curr_job != NULL; i++)
 	{
 		if (curr_job->stopped)
@@ -106,11 +106,11 @@ void PrintJobs(Pjob header)
 	}
 }
 
-Pjob find_job(Pjob header, int line_num) {
+Pjob find_job(int line_num) {
 	Pjob curr_job, prev_job;
 	if (line_num != 0)
 	{
-		curr_job = header;
+		curr_job = jobs;
 		for (int i = 1; i < line_num; i++) {
 			if (curr_job->next_job = NULL) // line num larger than num of jobs
 				return NULL;
@@ -127,9 +127,9 @@ Pjob find_job(Pjob header, int line_num) {
 	return curr_job;
 }
 
-void update_jobs(Pjob header)
+void update_jobs()
 {
-	Pjob curr_job = header, prev_job;
+	Pjob curr_job = jobs, prev_job;
 	int status, pID;
 	while (curr_job != NULL)
 	{
