@@ -167,7 +167,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 			curr_job = find_job(jobs, job_num); //TODO
 			if (curr_job == NULL)
 				illegal_cmd = true;
-			else if (cur_job->stopped == false)
+			else if (curr_job->stopped == false)
 				printf("smash error: > job %d is already running on background\n", job_num);
 			else
 			{
@@ -201,22 +201,24 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 	}
 	else if (!strcmp(cmd, "mv"))
 	{
-		if (num_arg != 2
+		if (num_arg != 2)
 			illegal_cmd = true;
-		else {
-			if (rename(args[1], args[2])) {
+		else
+		{
+			if (rename(args[1], args[2]))
+			{
 				perror("error");
 				return 1;
 			}
-			else {
+			else 
 				printf("%s has been renamed to %s\n", args[1], args[2]);
-			}
+			
 		}
 	}
 	/*************************************************/
 	else // external command
 	{
-		ExeExternal(args, cmdString);
+		ExeExternal(jobs,args, cmdString, num_arg);
 		return 0;
 	}
 	if (illegal_cmd == true)
@@ -232,7 +234,7 @@ int ExeCmd(Pjob jobs, char* lineSize, char* cmdString, char* prev_folder, Phisto
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
+void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 {
 	int pID;
 	switch (pID = fork())
@@ -257,7 +259,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 	default:
 		// parent process 
 		if (!strcmp(args[num_arg], "&")) { // for bg command
-			if (!InsertJob(jobs, cmd, pID, false, 0, time(NULL)))
+			if (!create_Job(jobs, pID, args[0], false))
 				printf("Can't add job\n");
 		}
 		else {
