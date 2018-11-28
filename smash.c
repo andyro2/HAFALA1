@@ -25,8 +25,6 @@ char prev_folder[MAX_LINE_SIZE + 1] = { 0 };
 //**************************************************************************************
 int main(int argc, char *argv[])
 {
-    char cmdString[MAX_LINE_SIZE];
-
 	char cmdString[MAX_LINE_SIZE];
 	History* history = (History*)malloc(sizeof(History));
 	history->prev_exists = FALSE;
