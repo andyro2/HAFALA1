@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 		history_save(history, cmdString);
 		update_jobs(jobs);
 					// perform a complicated Command
-		if(!ExeComp(lineSize)) continue; 
+		if(!ExeComp(jobs, lineSize)) continue; 
 					// background command	
 	 	if(!BgCmd(lineSize, jobs)) continue; 
 					// built in commands

@@ -258,7 +258,8 @@ void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 
 	default:
 		// parent process 
-		if (!strcmp(args[num_arg], "&")) { // for bg command
+		if (!strcmp(args[num_arg], "&")) // for bg command
+		{ 
 			if (!create_Job(jobs, pID, args[0], false))
 				printf("Can't add job\n");
 		}
@@ -276,7 +277,7 @@ void ExeExternal(Pjob jobs,char *args[MAX_ARG], char* cmdString, int num_arg)
 // Parameters: command string
 // Returns: 0- if complicated -1- if not
 //**************************************************************************************
-int ExeComp(char* lineSize)
+int ExeComp(Pjob jobs, char* lineSize)
 {
 	char ExtCmd[MAX_LINE_SIZE + 2];
 	char *args[MAX_ARG];
@@ -288,7 +289,7 @@ int ExeComp(char* lineSize)
 		args[3] = lineSize;
 		args[4] = NULL;
 		for (int k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
-		ExeExternal(args, "/bin/bash", 0);
+		ExeExternal(jobs,args, "/bin/bash", args,0);
 		return 0;
 	}
 	return -1;
