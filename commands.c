@@ -218,7 +218,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	/*************************************************/
 	else // external command
 	{
-		ExeExternal(jobs,args, cmdString, num_arg);
+		ExeExternal(args, cmdString, num_arg);
 		return 0;
 	}
 	if (illegal_cmd == true)
@@ -289,7 +289,7 @@ int ExeComp(char* lineSize)
 		args[3] = lineSize;
 		args[4] = NULL;
 		for (int k = 4; k < MAX_ARG; ++k)      args[k] = '\0';
-		ExeExternal(jobs,args, "/bin/bash", 0);
+		ExeExternal(args, "/bin/bash", 0);
 		return 0;
 	}
 	return -1;

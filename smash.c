@@ -66,11 +66,11 @@ int main(int argc, char *argv[])
 		history_save(history, cmdString);
 		update_jobs();
 					// perform a complicated Command
-		if(!ExeComp(jobs, lineSize)) continue; 
+		if(!ExeComp(lineSize)) continue; 
 					// background command	
-	 	if(!BgCmd(lineSize, jobs)) continue; 
+	 	if(!BgCmd(lineSize)) continue; 
 					// built in commands
-		ExeCmd(jobs, lineSize, cmdString, prev_folder,history, L_Fg_Cmd);
+		ExeCmd(lineSize, cmdString, prev_folder,history);
 		
 		/* initialize for next line read*/
 		lineSize[0]='\0';
