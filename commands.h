@@ -14,9 +14,9 @@
 #define MAX_ARG 20
 #define HIST_MAX 51
 
-extern int curr_run_pid;
-extern Pjob jobs;
-extern char* L_Fg_Cmd;
+ int curr_run_pid;
+ Pjob jobs;
+ char* L_Fg_Cmd;
 
 
 

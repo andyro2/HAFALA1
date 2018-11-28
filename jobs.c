@@ -27,7 +27,7 @@ Pjob remove_job(int line_num) {
 	{
 		curr_job = jobs;
 		for (int i = 1; i < line_num; i++) {
-			if (curr_job->next_job = NULL) // line num larger than num of jobs
+			if (curr_job->next_job == NULL) // line num larger than num of jobs
 				return NULL;
 			prev_job = curr_job;
 			curr_job = curr_job->next_job;
@@ -63,10 +63,10 @@ int kill_jobs() {
 
 		if (kill(curr_job->pid, SIGTERM)) {
 			printf("Error! can't send SIGTERM");
-			return;
+			return -1;
 		}
 		//printf("Signal %d was sent to pid %d ", SIGTERM, arr[i].pid);
-		int start_t, curr_t, res;
+		long int start_t, curr_t, res;
 		time(&start_t);
 		while (time(&curr_t) - start_t < 5) {
 
@@ -99,9 +99,9 @@ void PrintJobs()
 	for (int i = 1; curr_job != NULL; i++)
 	{
 		if (curr_job->stopped)
-			printf("[%d] %s :  %d secs (Stopped)\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
+			printf("[%d] %s :  %lu secs (Stopped)\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
 		else
-			printf("[%d] %s :  %d secs\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
+			printf("[%d] %s :  %lu secs\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
 		curr_job = curr_job->next_job;
 	}
 }
@@ -112,16 +112,18 @@ Pjob find_job(int line_num) {
 	{
 		curr_job = jobs;
 		for (int i = 1; i < line_num; i++) {
-			if (curr_job->next_job = NULL) // line num larger than num of jobs
+			if (curr_job->next_job == NULL) // line num larger than num of jobs
 				return NULL;
 			prev_job = curr_job;
 			curr_job = curr_job->next_job;
+			prev_job->next_job = curr_job;
 		}
 	}
 	else { //num_args = 0
 		while (curr_job->next_job != NULL) {
 			prev_job = curr_job;
 			curr_job = curr_job->next_job;
+			prev_job->next_job = curr_job;
 		}
 	}
 	return curr_job;

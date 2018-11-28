@@ -26,7 +26,7 @@ void ctrlz_handler(int sig_number) {
 			perror("error");
 		else {
 			printf("Signal SIGTSTP was sent to pid %d\n", curr_run_pid);
-			if (!create_Job(jobs, curr_run_pid, L_Fg_Cmd, true))
+			if (!create_Job(curr_run_pid, L_Fg_Cmd, true))
 				printf("Can't add job\n");
 		}
 		curr_run_pid = -1;

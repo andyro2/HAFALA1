@@ -12,6 +12,7 @@ main file. This file contains the main function of smash
 #include "commands.h"
 #include "signals.h"
 #include "jobs.h"
+
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
 
