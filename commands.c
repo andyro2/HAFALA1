@@ -9,25 +9,29 @@
 //**************************************************************************************
 int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 {
-
 	char* cmd;
 	char* args[MAX_ARG];
 	char pwd[MAX_LINE_SIZE];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
 	bool illegal_cmd = false; // illegal command
+							  //printf("\nline size  =  \"%s\" \n", lineSize);
 	cmd = strtok(cmdString, delimiters);
 	if (cmd == NULL)
 		return 0;
 	args[0] = cmd;
+
+	//printf("\nline size  =  \"%s\" \n", cmdString);
 	for (i = 1; i<MAX_ARG; i++)
 	{
 		args[i] = strtok(NULL, delimiters);
 		if (args[i] != NULL)
 			num_arg++;
-
+		//printf("\nnum args  = %d \n", num_arg);
 	}
 
+	//for (int p = 0; p <= num_arg ; p++)
+	//printf("num_arg[%d] = %s \n", p, args[p]);
 	/*************************************************/
 	// Built in Commands PLEASE NOTE NOT ALL REQUIRED
 	// ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
@@ -35,7 +39,6 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	/*************************************************/
 	if (!strcmp(cmd, "cd"))
 	{
-
 		if (num_arg != 1) {
 			illegal_cmd = true;
 		}
@@ -66,14 +69,14 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	/*************************************************/
 	else if (!strcmp(cmd, "pwd"))
 	{
-		if (num_arg != 0) 
+		if (num_arg != 0)
 			illegal_cmd = true;
 		else if (getcwd(pwd, MAX_LINE_SIZE + 1) == NULL)
 		{
 			perror("error");
 			return 1;
 		}
-		else 
+		else
 			printf("%s\n", pwd);
 
 	}
@@ -81,7 +84,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	/*************************************************/
 	else if (!strcmp(cmd, "history"))
 	{
-		if (num_arg == 0) 
+		if (num_arg == 0)
 		{
 
 			Phistory hist = history;
@@ -106,7 +109,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 		if (num_arg != 0) {
 			illegal_cmd = true;
 		}
-		else 
+		else
 			PrintJobs();
 	}
 	/*************************************************/
@@ -143,7 +146,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 				// *********************************************************
 				// not sure what the f**ck this is      zack: "hahaha"
 
-				
+
 				printf("%s\n", curr_job->name);
 				strcpy(L_Fg_Cmd, curr_job->name);
 				waitpid(curr_job->pid, NULL, 0);
@@ -214,9 +217,9 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 				perror("error");
 				return 1;
 			}
-			else 
+			else
 				printf("%s has been renamed to %s\n", args[1], args[2]);
-			
+
 		}
 	}
 	/*************************************************/
@@ -254,8 +257,8 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 		if (!strcmp(args[num_arg], "&"))
 			args[num_arg] = '\0';
 		execvp(cmdString, args);
-		//perror("smash error: > ");
-		printf("Execution of %d pid failed", curr_run_pid);
+		perror("error: > ");
+		printf("Execution of %d pid failed\n", curr_run_pid);
 		curr_run_pid = -1;
 		exit(1);
 	}
@@ -263,7 +266,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 	default:
 		// parent process 
 		if (!strcmp(args[num_arg], "&")) // for bg command
-		{ 
+		{
 			if (!create_Job(pID, args[0], false))
 				printf("Can't add job\n");
 		}
@@ -321,13 +324,17 @@ int BgCmd(char* lineSize)
 			num_arg++;
 
 	}
-	if (lineSize[strlen(lineSize) - 2] == '&')
-	{
-		lineSize[strlen(lineSize) - 2] = '\0';
 
+	//printf("hiii line size is: %s\n", args[num_arg]);
+
+	if (*args[num_arg] == '&')
+	{
+		//lineSize[strlen(lineSize) - 2] = '\0';
+		args[num_arg] = NULL;
+		num_arg -= 1;
 		int pID;
 
-		printf("& detected on process %d!\n",getpid());	
+		//printf("& detected on process %d!\n",getpid());	
 
 		switch (pID = fork()) {
 		case -1:
@@ -343,14 +350,14 @@ int BgCmd(char* lineSize)
 			}
 			return -1;
 		default:
-		
-			create_Job(pID, cmd,false);
+
+			create_Job(pID, cmd, false);
 			PrintJobs();
 			return 0;
-		
+
 		}
 	}
-	return -1;
+	else return -1;
 }
 
 void history_save(Phistory history, char* cmd)
