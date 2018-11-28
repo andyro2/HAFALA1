@@ -15,6 +15,8 @@
 #define HIST_MAX 51
 
 extern int curr_run_pid;
+extern Pjob jobs;
+extern char* L_Fg_Cmd;
 
 
 
