@@ -4,6 +4,8 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include "signals.h"
+#include "commands.h"
 
 #ifndef _Job_H_
 #define _Job_H_
