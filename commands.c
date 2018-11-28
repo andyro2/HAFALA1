@@ -343,7 +343,6 @@ int BgCmd(char* lineSize)
 			return -1;
 		case 0:
 			setpgrp();
-			printf("\nHi im here 0\n");
 			if (execvp(cmd, args) == -1)
 			{
 				perror("Execvp error");
@@ -351,7 +350,6 @@ int BgCmd(char* lineSize)
 			}
 			return -1;
 		default:
-			printf("Hi im here not 0\n");
 			if (create_Job(pID, cmd, false)) printf("new job created \n");
 			//PrintJobs();
 			return 0;
