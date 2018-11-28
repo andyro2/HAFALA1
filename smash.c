@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	/************************************/
 	//NOTE: the signal handlers and the function/s that sets the handler should be found in siganls.c
 	sigaction(SIGINT, &ctrlC, NULL);
-	sigaction(SIGTSTP, &ctrlZ, jobs);
+	sigaction(SIGTSTP, &ctrlZ, jobs, L_Fg_Cmd);
 
 	/************************************/
 

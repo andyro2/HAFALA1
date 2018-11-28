@@ -12,7 +12,7 @@
 #include "jobs.h"
 
 void ctrlc_handler(int sig_number);
-void ctrlz_handler(int sig_number, Pjob);
+void ctrlz_handler(int sig_number, Pjob job, char* L_Fg_Cmd);
 
 
 
