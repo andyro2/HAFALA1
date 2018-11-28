@@ -15,8 +15,8 @@ main file. This file contains the main function of smash
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
 
-char* L_Fg_Cmd;
-Pjob jobs = NULL;
+//char* L_Fg_Cmd;
+//Pjob jobs = NULL;
 char lineSize[MAX_LINE_SIZE]; 
 char prev_folder[MAX_LINE_SIZE + 1] = { 0 };
 //**************************************************************************************
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	/************************************/
 	//NOTE: the signal handlers and the function/s that sets the handler should be found in siganls.c
 	sigaction(SIGINT, &ctrlC, NULL);
-	sigaction(SIGTSTP, &ctrlZ, jobs, L_Fg_Cmd);
+	sigaction(SIGTSTP, &ctrlZ, NULL);
 
 	/************************************/
 
@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
 	// Init globals 
 
 	curr_run_pid = -1;
-	
+	jobs = NULL;
+
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 
 			exit (-1); 

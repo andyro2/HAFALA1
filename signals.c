@@ -19,7 +19,7 @@ void ctrlc_handler(int sig_number) {
 /*******************************************/
 /* Name: handler_cntlz
 Synopsis: handle the Control-Z */
-void ctrlz_handler(int sig_number, Pjob jobs, char* L_Fg_Cmd) {
+void ctrlz_handler(int sig_number) {
 	if (curr_run_pid == -1) return;
 	else {
 		if (kill(curr_run_pid, SIGTSTP))
