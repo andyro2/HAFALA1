@@ -355,6 +355,7 @@ int BgCmd(char* lineSize)
 			}
 			return -1;
 		default:
+			printf("new job created \n");
 			if (create_Job(pID, cmd, false))
 			{
 				printf("new job created \n");

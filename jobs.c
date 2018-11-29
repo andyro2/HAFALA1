@@ -11,7 +11,7 @@ bool create_Job(int pid, char* name, bool stopped)
 	job = (Pjob)malloc(sizeof(job));
 	if (job == NULL)
 	{
-		free(job);
+		//printf("malloc eror");
 		return false;
 	}
 	job->pid = pid;
@@ -19,7 +19,8 @@ bool create_Job(int pid, char* name, bool stopped)
 	job->ini_time = time(NULL);
 	job->stopped = stopped;
 	job->next_job = NULL;
-	Pjob curr_job = jobs, prev_job;
+	Pjob curr_job, prev_job;
+	curr_job = jobs;
 	if (jobs == NULL)
 		jobs = job;
 	else
@@ -28,6 +29,11 @@ bool create_Job(int pid, char* name, bool stopped)
 			prev_job = curr_job;
 			curr_job = curr_job->next_job;
 
+		}
+		if (prev_job == NULL)
+		{
+			printf("prev job is null");
+			exit(1);
 		}
 		prev_job->next_job = job;
 	}
