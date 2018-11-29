@@ -19,24 +19,27 @@ bool create_Job(int pid, char* name, bool stopped)
 	job->ini_time = time(NULL);
 	job->stopped = stopped;
 	job->next_job = NULL;
-	Pjob curr_job, prev_job;
+	Pjob curr_job;
 	curr_job = jobs;
+
 	if (jobs == NULL)
 		jobs = job;
+	
 	else
 	{
-		while (curr_job != NULL) {
-			prev_job = curr_job;
+		//printf("in else\n");
+		while (curr_job->next_job != NULL) {
+			//printf("in while loop\n");
+			//if (!curr_job) printf("error!!!\n");
 			curr_job = curr_job->next_job;
 
 		}
-		if (prev_job == NULL)
-		{
-			printf("prev job is null");
-			exit(1);
-		}
-		prev_job->next_job = job;
+		//printf("exited while loop\n");
+		//if (!curr_job) printf("error!!!\n");
+		curr_job->next_job = job;
+		//printf("done\n");
 	}
+	//printf("father\n");
 	return true;
 }
 

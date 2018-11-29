@@ -341,13 +341,13 @@ int BgCmd(char* lineSize)
 
 		switch (pID = fork()) {
 		case -1:
-			printf("im here -1\n");
+			//printf("im here -1\n");
 			perror("perror: ");
 			exit(1);
 			return -1;
 		case 0:
 			setpgrp();
-			printf("im here 0\n");
+			//printf("im here 0\n");
 			if (execvp(cmd, args) == -1)
 			{;
 				perror("Execvp error");
@@ -355,7 +355,7 @@ int BgCmd(char* lineSize)
 			}
 			return -1;
 		default:
-			printf("new job created \n");
+
 			if (create_Job(pID, cmd, false))
 			{
 				printf("new job created \n");
