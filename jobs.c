@@ -154,7 +154,7 @@ void update_jobs()
 		{
 			printf("8\n");
 			prev_job->next_job = curr_job->next_job;
-			free(curr_job);
+			//free(curr_job);
 		}
 		curr_job = prev_job->next_job;
 		printf("9\n");
