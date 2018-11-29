@@ -331,7 +331,7 @@ int BgCmd(char* lineSize)
 
 	if (*args[num_arg] == '&')
 	{
-		printf("im here 1\n");
+		//printf("im here 1\n");
 		//lineSize[strlen(lineSize) - 2] = '\0';
 		args[num_arg] = NULL;
 		num_arg -= 1;
