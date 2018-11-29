@@ -61,21 +61,30 @@ int main(int argc, char *argv[])
     	{
 	 	printf("smash > ");
 		fgets(lineSize, MAX_LINE_SIZE, stdin);
-		strcpy(cmdString, lineSize); 	
+		printf("anddddddy\n");
+		strcpy(cmdString, lineSize); 
+		printf("1\n");
 		cmdString[strlen(lineSize)-1]='\0';
+		printf("2\n");
 		// Save History here!
 	    history_save(history, cmdString);
+		printf("3\n");
 		update_jobs();
+		printf("4\n");
 					// perform a complicated Command
 		if(!ExeComp(lineSize)) continue; 
+		printf("11\n");
 					// background command	
 	 	if(!BgCmd(lineSize)) continue; 
+		printf("22\n");
 					// built in commands
 		ExeCmd(lineSize, cmdString, prev_folder,history);
+		printf("33\n");
 		
 		/* initialize for next line read*/
 		lineSize[0]='\0';
 		cmdString[0]='\0';
+		printf("44\n");
 	}
 		free_jobs();
 		free(L_Fg_Cmd);

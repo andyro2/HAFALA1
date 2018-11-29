@@ -273,6 +273,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 		else {
 			curr_run_pid = pID;
 			waitpid(pID, NULL, 0);
+
 			curr_run_pid = -1;
 
 		}
@@ -310,6 +311,7 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(char* lineSize)
 {
+	printf("im here\n");
 	char *args[MAX_ARG];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
@@ -329,6 +331,7 @@ int BgCmd(char* lineSize)
 
 	if (*args[num_arg] == '&')
 	{
+		printf("im here 1\n");
 		//lineSize[strlen(lineSize) - 2] = '\0';
 		args[num_arg] = NULL;
 		num_arg -= 1;
@@ -338,19 +341,24 @@ int BgCmd(char* lineSize)
 
 		switch (pID = fork()) {
 		case -1:
+			printf("im here -1\n");
 			perror("perror: ");
 			exit(1);
 			return -1;
 		case 0:
 			setpgrp();
+			printf("im here 0\n");
 			if (execvp(cmd, args) == -1)
-			{
+			{;
 				perror("Execvp error");
 				exit(1);
 			}
 			return -1;
 		default:
-			if (create_Job(pID, cmd, false)) printf("new job created \n");
+			if (create_Job(pID, cmd, false))
+			{
+				printf("new job created \n");
+			}
 			//PrintJobs();
 			return 0;
 

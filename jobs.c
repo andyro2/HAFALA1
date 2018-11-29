@@ -19,7 +19,6 @@ bool create_Job(int pid, char* name, bool stopped)
 	job->ini_time = time(NULL);
 	job->stopped = stopped;
 	job->next_job = NULL;
-
 	Pjob curr_job = jobs, prev_job;
 	if (jobs == NULL)
 		jobs = job;
@@ -28,6 +27,7 @@ bool create_Job(int pid, char* name, bool stopped)
 		while (curr_job != NULL) {
 			prev_job = curr_job;
 			curr_job = curr_job->next_job;
+
 		}
 		prev_job->next_job = job;
 	}
@@ -145,17 +145,19 @@ Pjob find_job(int line_num) {
 void update_jobs()
 {
 	Pjob curr_job = jobs, prev_job;
-	int status, pID;
+	int status, pID;	
 	while (curr_job != NULL)
 	{
-		prev_job = curr_job;
+		prev_job = curr_job;	
 		pID = waitpid(curr_job->pid, &status, WNOHANG);
 		if (((pID == curr_job->pid) && WIFEXITED(status)) || pID == -1)
 		{
+			printf("8\n");
 			prev_job->next_job = curr_job->next_job;
 			free(curr_job);
 		}
 		curr_job = prev_job->next_job;
+		printf("9\n");
 	}
 }
 
