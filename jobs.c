@@ -33,7 +33,7 @@ bool create_Job(int pid, char* name, bool stopped)
 	}
 	return true;
 }
-
+/*
 Pjob remove_job(int line_num) {
 	Pjob curr_job, prev_job;
 	if (line_num != 0)
@@ -56,7 +56,7 @@ Pjob remove_job(int line_num) {
 	curr_job->next_job = NULL;
 	return curr_job;
 }
-
+*/
 void free_jobs() {
 	Pjob curr_job = jobs, tmp = NULL;
 
@@ -112,31 +112,29 @@ void PrintJobs()
 	for (int i = 1; curr_job != NULL; i++)
 	{
 		if (curr_job->stopped)
-			printf("[%d] %s :  %lu secs (Stopped)\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
+			printf("[%d] %s :  %lu secs (Stopped)\n", i, curr_job->name, time(NULL) - curr_job->ini_time);
 		else
-			printf("[%d] %s :  %lu secs\n", curr_job->pid, curr_job->name, time(NULL) - curr_job->ini_time);
+			printf("[%d] %s :  %lu secs\n", i, curr_job->name, time(NULL) - curr_job->ini_time);
 		curr_job = curr_job->next_job;
 	}
 }
 
 Pjob find_job(int line_num) {
-	Pjob curr_job, prev_job;
+	Pjob curr_job = jobs;
 	if (line_num != 0)
 	{
-		curr_job = jobs;
 		for (int i = 1; i < line_num; i++) {
 			if (curr_job->next_job == NULL) // line num larger than num of jobs
+			{
+				printf("error line num larger than jobs number");
 				return NULL;
-			prev_job = curr_job;
+			}
 			curr_job = curr_job->next_job;
-			prev_job->next_job = curr_job;
 		}
 	}
 	else { //num_args = 0
 		while (curr_job->next_job != NULL) {
-			prev_job = curr_job;
 			curr_job = curr_job->next_job;
-			prev_job->next_job = curr_job;
 		}
 	}
 	return curr_job;
@@ -144,18 +142,29 @@ Pjob find_job(int line_num) {
 
 void update_jobs()
 {
-	Pjob curr_job = jobs, prev_job;
+	Pjob curr_job = jobs, prev_job = jobs;
 	int status, pID;
 	while (curr_job != NULL)
 	{
-		prev_job = curr_job;
 		pID = waitpid(curr_job->pid, &status, WNOHANG);
 		if (((pID == curr_job->pid) && WIFEXITED(status)) || pID == -1)
 		{
-			prev_job->next_job = curr_job->next_job;
-			free(curr_job);
+			if (curr_job == jobs) {
+				jobs = curr_job->next_job;
+				prev_job = jobs;
+				free(curr_job);
+				curr_job = jobs;
+			}
+			else {
+				prev_job->next_job = curr_job->next_job;
+				free(curr_job);
+				curr_job = prev_job->next_job;
+			}
 		}
-		curr_job = prev_job->next_job;
+		else {
+			prev_job = curr_job;
+			curr_job = curr_job->next_job;
+		}
 	}
 }
 
