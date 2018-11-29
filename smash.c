@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 		/* initialize for next line read*/
 		lineSize[0]='\0';
 		cmdString[0]='\0';
-		printf("44\n");
+		//printf("44\n");
 	}
 		free_jobs();
 		free(L_Fg_Cmd);

@@ -311,7 +311,7 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(char* lineSize)
 {
-	printf("im here\n");
+	//printf("im here\n");
 	char *args[MAX_ARG];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
