@@ -161,12 +161,12 @@ void update_jobs()
 		pID = waitpid(curr_job->pid, &status, WNOHANG);
 		if (((pID == curr_job->pid) && WIFEXITED(status)) || pID == -1)
 		{
-			printf("8\n");
+			//printf("8\n");
 			prev_job->next_job = curr_job->next_job;
 			//free(curr_job);
 		}
 		curr_job = prev_job->next_job;
-		printf("9\n");
+		//printf("9\n");
 	}
 }
 
