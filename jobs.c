@@ -33,30 +33,7 @@ bool create_Job(int pid, char* name, bool stopped)
 	}
 	return true;
 }
-/*
-Pjob remove_job(int line_num) {
-	Pjob curr_job, prev_job;
-	if (line_num != 0)
-	{
-		curr_job = jobs;
-		for (int i = 1; i < line_num; i++) {
-			if (curr_job->next_job == NULL) // line num larger than num of jobs
-				return NULL;
-			prev_job = curr_job;
-			curr_job = curr_job->next_job;
-		}
-	}
-	else { //num_args = 0
-		while (curr_job->next_job != NULL) {
-			prev_job = curr_job;
-			curr_job = curr_job->next_job;
-		}
-	}
-	prev_job->next_job = curr_job->next_job;
-	curr_job->next_job = NULL;
-	return curr_job;
-}
-*/
+
 void free_jobs() {
 	Pjob curr_job = jobs, tmp = NULL;
 
@@ -136,6 +113,32 @@ Pjob find_job(int line_num) {
 		while (curr_job->next_job != NULL) {
 			curr_job = curr_job->next_job;
 		}
+	}
+	return curr_job;
+}
+
+Pjob find_stopped_job(int line_num) {
+	Pjob curr_job = jobs;
+	Pjob last_stopped_job = jobs;
+	if (line_num != 0)
+	{
+		for (int i = 1; i < line_num; i++) {
+			if (curr_job->next_job == NULL) // line num larger than num of jobs
+			{
+				printf("error line num larger than jobs number");
+				return NULL;
+			}
+			curr_job = curr_job->next_job;
+		}
+	}
+	else { //num_args = 0
+		while (curr_job->next_job != NULL) {
+			if (curr_job->stopped == true)
+				last_stopped_job = curr_job;
+			printf("jobs is %s and it stopped - %d\n", curr_job->name, curr_job->stopped);
+			curr_job = curr_job->next_job;
+		}
+		curr_job = last_stopped_job;
 	}
 	return curr_job;
 }
