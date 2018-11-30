@@ -48,37 +48,43 @@ void free_jobs() {
 
 int kill_jobs() {
 	Pjob curr_job = jobs;
+	bool done_flag = false;
 	for (int i = 1; curr_job != NULL; i++) {
 		printf("[%d] %s - Sending SIGTERM... ", i, curr_job->name);
 
-		if (kill(curr_job->pid, SIGTERM)) {
+		if (kill(curr_job->pid, SIGTERM) == -1) {
 			printf("Error! can't send SIGTERM");
 			return -1;
 		}
-		//printf("Signal %d was sent to pid %d ", SIGTERM, arr[i].pid);
-		long int start_t, curr_t, res;
+	
+		long int start_t, res;
 		time(&start_t);
-		while (time(&curr_t) - start_t < 5) {
+		while (time(NULL) - start_t < 5) {
 
 			res = waitpid(curr_job->pid,NULL, WNOHANG);
 			if (res > 0) { //finished
 				printf("DONE.\n");
+				done_flag = true;
+				break;
 			}
 			else if (res == -1) {
 				printf("Error! SIGTERM failed \n");
 				return -1;
 			}
 		}
-		printf("(5 sec passed) Sending SIGKILL...");
+		if (done_flag != true) {
+			printf("(5 sec passed) Sending SIGKILL...");
 
-		res = kill(curr_job->pid, SIGKILL);
+			res = kill(curr_job->pid, SIGKILL);
 
-		if (res != 0) {
-			printf("Error! SIGKILL failed \n");
-			return -1;
+			if (res != 0) {
+				printf("Error! SIGKILL failed \n");
+				return -1;
+			}
+			else
+				printf("DONE.\n");
 		}
-		else
-			printf("DONE.\n");
+		curr_job = curr_job->next_job;
 	}
 	return 0;
 }
