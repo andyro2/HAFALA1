@@ -5,10 +5,10 @@ CCLINK = $(CC)
 OBJS = test.o
 RM = rm -f
 # Creating the  executable
-smash: $(OBJS)
+test: $(OBJS)
 	$(CCLINK) -o test $(OBJS)
 # Creating the object files
-test.o: test.h
+test.o: 
 clean:
 	$(RM) $(TARGET) *.o *~ "#"* core.*
 
