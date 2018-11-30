@@ -295,6 +295,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 //**************************************************************************************
 void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 {
+	printf("annnn\n");
 	int pID;
 	switch (pID = fork())
 	{
@@ -402,17 +403,17 @@ int BgCmd(char* lineSize)
 			setpgrp();
 			//printf("im here 0\n");
 			if (execvp(cmd, args) == -1)
-			{;
+			{
 				perror("Execvp error");
 				exit(1);
 			}
 			return -1;
 		default:
-
-			if (create_Job(pID, cmd, false))
-			{
-				printf("new job created \n");
-			}
+			
+			if (create_Job(pID, cmd, false) == NULL)
+				printf("Job create failed!");
+					
+			
 			//PrintJobs();
 			return 0;
 
