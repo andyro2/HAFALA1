@@ -23,7 +23,6 @@ typedef struct _JOBS {
 } job,* Pjob;
 
 bool create_Job(int pid, char* name, bool); // creates new job and inserts at the and. returns success or fail
-//Pjob remove_job( int line_num); // removes from list and returnes job according to line num. if line num = 0 returns last
 Pjob find_stopped_job(int line_num);
 Pjob find_job(int line_num);
 void free_jobs();

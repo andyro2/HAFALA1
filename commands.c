@@ -15,23 +15,18 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
 	bool illegal_cmd = false; // illegal command
-							  //printf("\nline size  =  \"%s\" \n", lineSize);
 	cmd = strtok(cmdString, delimiters);
 	if (cmd == NULL)
 		return 0;
 	args[0] = cmd;
-
-	//printf("\nline size  =  \"%s\" \n", cmdString);
 	for (i = 1; i<MAX_ARG; i++)
 	{
 		args[i] = strtok(NULL, delimiters);
 		if (args[i] != NULL)
 			num_arg++;
-		//printf("\nnum args  = %d \n", num_arg);
 	}
 
-	//for (int p = 0; p <= num_arg ; p++)
-	//printf("num_arg[%d] = %s \n", p, args[p]);
+
 	/*************************************************/
 	// Built in Commands PLEASE NOTE NOT ALL REQUIRED
 	// ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
@@ -135,7 +130,6 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 				}
 				else {
 					if (kill(curr_job->pid, signal_number)) {
-						//illegal_cmd = TRUE;
 						printf("%s %d - cannot send signal\n", cmdString, job_number);
 						return 0;
 					}
@@ -192,7 +186,6 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 					printf("Signal SIGCONT was sent to pid %d\n", curr_job->pid);
 				}
 				// *********************************************************
-				// not sure what the f**ck this is      zack: "hahaha"
 
 				printf("%s\n", curr_job->name);
 				strcpy(L_Fg_Cmd, curr_job->name);
@@ -365,7 +358,6 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(char* lineSize)
 {
-	//printf("im here\n");
 	char *args[MAX_ARG];
 	char* delimiters = " \t\n";
 	int i = 0, num_arg = 0;
@@ -381,27 +373,19 @@ int BgCmd(char* lineSize)
 
 	}
 
-	//printf("hiii line size is: %s\n", args[num_arg]);
-
 	if (*args[num_arg] == '&')
 	{
-		//printf("im here 1\n");
-		//lineSize[strlen(lineSize) - 2] = '\0';
 		args[num_arg] = NULL;
 		num_arg -= 1;
 		int pID;
 
-		//printf("& detected on process %d!\n",getpid());	
-
 		switch (pID = fork()) {
 		case -1:
-			//printf("im here -1\n");
 			perror("perror: ");
 			exit(1);
 			return -1;
 		case 0:
 			setpgrp();
-			//printf("im here 0\n");
 			if (execvp(cmd, args) == -1)
 			{
 				perror("Execvp error");
@@ -413,8 +397,6 @@ int BgCmd(char* lineSize)
 			if (create_Job(pID, cmd, false) == NULL)
 				printf("Job create failed!");
 					
-			
-			//PrintJobs();
 			return 0;
 
 		}

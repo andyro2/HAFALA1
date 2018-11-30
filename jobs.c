@@ -143,7 +143,6 @@ Pjob find_stopped_job(int line_num) {
 			if (curr_job->stopped == true) 
 				last_stopped_job = curr_job;
 			
-			//printf("jobs is %s and it stopped - %d\n", curr_job->name, curr_job->stopped);
 			curr_job = curr_job->next_job;
 		}
 		curr_job = last_stopped_job;
