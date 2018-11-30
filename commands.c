@@ -103,7 +103,55 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 		}
 	}
 	/*************************************************/
+	else if (!strcmp(cmd, "kill"))
+	{
+		if (num_arg != 2) 
+		{
+			illegal_cmd = true;
+		}
+		else {
+			int signal_number = atoi(strtok(args[1], "-"));
+			int job_number = atoi(args[2]);
+			if (!signal_number || !job_number)
+			{
+				illegal_cmd = true;
+			}
 
+			else {
+				Pjob curr_job = jobs;
+				for (int i = 0; i < job_number - 1; i++)
+				{
+					if (!curr_job->next_job)
+					{
+						printf("%s %d - job does not exist\n", cmdString, job_number);
+						return -1;
+					}
+					curr_job = curr_job->next_job;
+
+				}
+				if (!curr_job) {
+					printf("%s %d - job does not exist\n", cmdString, job_number);
+					return -1;
+				}
+				else {
+					if (kill(curr_job->pid, signal_number)) {
+						//illegal_cmd = TRUE;
+						printf("%s %d - cannot send signal\n", cmdString, job_number);
+						return 0;
+					}
+					printf("Signal %d was sent to pid %d\n", signal_number, curr_job->pid);
+					if (signal_number == SIGSTOP || signal_number == SIGTSTP) //SIGSTOP signals
+					{
+						curr_job->stopped = true;
+					}
+					else if (signal_number == SIGCONT)//SIGCONT signal
+					{
+						curr_job->stopped = false;
+					}
+				}
+			}
+		}
+	}
 	else if (!strcmp(cmd, "jobs"))
 	{
 		if (num_arg != 0) {
