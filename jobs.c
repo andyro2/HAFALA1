@@ -120,6 +120,7 @@ Pjob find_job(int line_num) {
 Pjob find_stopped_job(int line_num) {
 	Pjob curr_job = jobs;
 	Pjob last_stopped_job = jobs;
+	bool flag = false;
 	if (line_num != 0)
 	{
 		for (int i = 1; i < line_num; i++) {
@@ -133,13 +134,16 @@ Pjob find_stopped_job(int line_num) {
 	}
 	else { //num_args = 0
 		while (curr_job->next_job != NULL) {
-			if (curr_job->stopped == true)
+			if (curr_job->stopped == true) 
 				last_stopped_job = curr_job;
-			printf("jobs is %s and it stopped - %d\n", curr_job->name, curr_job->stopped);
+			
+			//printf("jobs is %s and it stopped - %d\n", curr_job->name, curr_job->stopped);
 			curr_job = curr_job->next_job;
 		}
 		curr_job = last_stopped_job;
+		if (curr_job->stopped == true) flag =true;
 	}
+	curr_job->stopped = flag;
 	return curr_job;
 }
 
