@@ -118,13 +118,12 @@ Pjob find_job(int line_num) {
 }
 
 Pjob find_stopped_job(int line_num) {
-
-	Pjob last_stopped_job = jobs;
 	Pjob curr_job = jobs;
+	Pjob last_stopped_job = jobs;
+	bool flag = false;
 	if (line_num != 0)
 	{
-		for (int i = 1; i < line_num; i++) 
-		{
+		for (int i = 1; i < line_num; i++) {
 			if (curr_job->next_job == NULL) // line num larger than num of jobs
 			{
 				printf("error line num larger than jobs number");
@@ -133,23 +132,18 @@ Pjob find_stopped_job(int line_num) {
 			curr_job = curr_job->next_job;
 		}
 	}
-	else
-	{ //num_args = 0
-		while (curr_job->next_job != NULL) 
-		{
-			if (curr_job->stopped) {
+	else { //num_args = 0
+		while (curr_job->next_job != NULL) {
+			if (curr_job->stopped == true) 
 				last_stopped_job = curr_job;
-				//printf("jobs is %s and it is stopped - %d\n", curr_job->name, curr_job->stopped);
-				//printf("last stopped jobs is %s and it is stopped - %d\n", last_stopped_job->name, last_stopped_job->stopped);
-			}
+			
+			//printf("jobs is %s and it stopped - %d\n", curr_job->name, curr_job->stopped);
 			curr_job = curr_job->next_job;
 		}
 		curr_job = last_stopped_job;
-		if (curr_job->stopped == true)
-			printf("jobs is %s and it is stopped\n", curr_job->name);
+		if (curr_job->stopped == true) flag =true;
 	}
-	if (curr_job->stopped != true)
-		printf("jobs 2 is %s and it is stopped\n", curr_job->name);
+	curr_job->stopped = flag;
 	return curr_job;
 }
 
