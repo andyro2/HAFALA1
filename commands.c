@@ -288,7 +288,6 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 //**************************************************************************************
 void ExeExternal(char *args[MAX_ARG], char* cmdString, int num_arg)
 {
-	printf("annnn\n");
 	int pID;
 	switch (pID = fork())
 	{
