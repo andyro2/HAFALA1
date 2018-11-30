@@ -174,7 +174,7 @@ int ExeCmd(char* lineSize, char* cmdString, char* prev_folder, Phistory history)
 
 			if (curr_job == NULL) 
 				illegal_cmd = true;
-			else if (!curr_job->stopped) {
+			else if (curr_job->stopped == false) {
 				if (job_num != 0)
 					printf("smash error: > job %d is already running on background\n", job_num);
 				else
